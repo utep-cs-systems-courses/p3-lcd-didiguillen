@@ -1,16 +1,22 @@
 /** \file lcddemo.c
  *  \brief A simple demo that draws a string and square
  */
-
+#include <msp430.h>
 #include <libTimer.h>
 #include "lcdutils.h"
 #include "lcddraw.h"
 
+#define LED BIT6
+
 void drawHourglass(int, int, int, u_int);
 void drawCat();
+int eyes_status = 1; //1 for open, 0 for closed
+int mouth_status = 0; //1 for open, 0 for closed
+int redrawScreen = 1;
+int mouth = 2; //neutral
 
-int max(int a, int b) { return a > b ? a : b; }
-int min(int a, int b) { return a > b ? b : a; }
+//int max(int a, int b) { return a > b ? a : b; }
+//int min(int a, int b) { return a > b ? b : a; }
 /** Initializes everything, clears the screen, draws "hello" and a square */
 int
 main()
@@ -20,18 +26,42 @@ main()
   u_char width = screenWidth, height = screenHeight;
 
   clearScreen(COLOR_LIME_GREEN);
+  enableWDTInterrupts();
+  or_sr(0x8);
+  drawBunny();
+  while(1){
+    if(redrawScreen){
+      redrawScreen = 0;
+      //drawBunny();
+      update_eyes();
+      //drawSmile();
+      drawMouth();
+      //drawClosedMouth();
+    }
+    P1OUT &= ~LED;
+    or_sr(0x10);
+    P1OUT |= LED;
+  }
   /*
   drawString5x7(20,20, "hello", COLOR_GREEN, COLOR_RED);
   */
   //fillRectangle(25, 25, 60, 60, COLOR_RED);
   //drawCat();
-  drawBunny();
+  //drawBunny();
   //drawOpenEyes();
-  drawClosedEyes();
+  //drawClosedEyes();
   //drawClosedMouth();
-  drawOpenMouth();
+  //drawOpenMouth();
   /**/
   //drawHourglass(screenWidth >> 1, screenHeight >> 1, 30, COLOR_PINK);
+}
+
+void update_eyes()
+{
+  if(eyes_status)
+    drawOpenEyes();
+  else
+    drawClosedEyes();
 }
 
 void drawCat()
@@ -45,7 +75,8 @@ void drawCat()
   fillRectangle(67, 44, 7, 10, COLOR_BLACK);
 }
 
-void drawBunny(){
+void drawBunny()
+{
   fillRectangle(31, 69, 64, 45, COLOR_WHITE);
   fillRectangle(31, 39, 16, 30, COLOR_WHITE);
   fillRectangle(79, 39, 16, 30, COLOR_WHITE);
@@ -53,24 +84,68 @@ void drawBunny(){
   fillRectangle(83, 44, 8, 25, COLOR_PINK);
 }
 
-void drawOpenEyes(){
+void drawOpenEyes()
+{
   fillRectangle(43, 79, 10, 10, COLOR_RED);
   fillRectangle(73, 79, 10, 10, COLOR_RED);
 }
 
 
-void drawClosedMouth(){
+void drawClosedMouth()
+{
+  fillRectangle(53, 96, 20, 12, COLOR_WHITE);
   fillRectangle(57, 100, 12, 2, COLOR_PINK);  
 }
 
-void drawOpenMouth(){
+void drawSmile()
+{
+  drawClosedMouth();
+  fillRectangle(55, 98, 2, 2, COLOR_PINK);
+  fillRectangle(53, 96, 2, 2, COLOR_PINK);
+  fillRectangle(69, 98, 2, 2, COLOR_PINK);
+  fillRectangle(71, 96, 2, 2, COLOR_PINK);
+}
+
+void drawFrown()
+{
+  drawClosedMouth();
+  fillRectangle(55, 102, 2, 2, COLOR_PINK);
+  fillRectangle(53, 104, 2, 2, COLOR_PINK);
+  fillRectangle(69, 102, 2, 2, COLOR_PINK);
+  fillRectangle(71, 104, 2, 2, COLOR_PINK);
+}
+
+void drawOpenMouth()
+{
+  drawClosedMouth();
   fillRectangle(57, 98, 12, 7, COLOR_PINK);
 }
 
-void drawClosedEyes(){
+void drawMouth()
+{
+  switch(mouth){
+  case 0:
+    drawFrown();
+    break;
+  case 1:
+    drawClosedMouth();
+    break;
+  case 2:
+    drawSmile();
+    break;
+  default:
+    drawOpenMouth();
+  }
+}
+
+void drawClosedEyes()
+{
+  fillRectangle(43, 79, 10, 10, COLOR_WHITE);
+  fillRectangle(73, 79, 10, 10, COLOR_WHITE);
   fillRectangle(43, 86, 10, 3, COLOR_PINK);
   fillRectangle(73, 86, 10, 3, COLOR_PINK);
 }
+/*
 void drawHourglass(int controlCol, int controlRow, int size, u_int color)
 {
   int c = 0;
@@ -87,5 +162,29 @@ void drawHourglass(int controlCol, int controlRow, int size, u_int color)
     r+=1;
   }
 }
-
+*/
 //Todo- draw rectangle, draw diamond, make functions
+void wdt_c_handler()
+{
+  static int sec_mouth = 0;
+  static int sec_eyes = 0;
+  if(sec_eyes++ >= 1250) {
+    sec_eyes = 0;
+    eyes_status = 0;
+    redrawScreen = 1;
+  }
+  if(sec_eyes++ >= 200 && !eyes_status) {
+    sec_eyes = 0;
+    eyes_status = 1;
+    redrawScreen = 1;
+  }
+
+  if(sec_mouth++ >= 1250){
+    sec_mouth = 0;
+    if(mouth > 0)
+      mouth--;
+    else
+      mouth = 2;
+    redrawScreen = 1;
+  }
+}
