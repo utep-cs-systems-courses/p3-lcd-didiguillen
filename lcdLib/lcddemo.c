@@ -38,6 +38,7 @@ main()
       //drawSmile();
       drawMouth();
       //drawClosedMouth();
+      drawCarrot();
     }
     P1OUT &= ~LED;
     or_sr(0x10);
@@ -145,6 +146,18 @@ void drawClosedEyes()
   fillRectangle(73, 79, 10, 10, COLOR_WHITE);
   fillRectangle(43, 86, 10, 3, COLOR_PINK);
   fillRectangle(73, 86, 10, 3, COLOR_PINK);
+}
+
+void drawCarrot()
+{
+  fillRectangle(54, 128, 20, 10, COLOR_ORANGE);
+  fillRectangle(52, 129, 2, 8, COLOR_ORANGE);
+  fillRectangle(50, 130, 2, 6, COLOR_ORANGE);
+  fillRectangle(48, 131, 2, 4, COLOR_ORANGE);
+  fillRectangle(46, 132, 2, 2, COLOR_ORANGE);
+  fillRectangle(74, 131, 4, 4, COLOR_FOREST_GREEN);
+  fillRectangle(78, 127, 4, 4, COLOR_FOREST_GREEN);
+  fillRectangle(78, 135, 4, 4, COLOR_FOREST_GREEN);
 }
 /*
 void drawHourglass(int controlCol, int controlRow, int size, u_int color)
