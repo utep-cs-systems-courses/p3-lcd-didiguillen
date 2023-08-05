@@ -29,7 +29,7 @@ main()
   enableWDTInterrupts();
   or_sr(0x8);
   drawBunny();
-  drawString11x16(32,10, "hello", COLOR_PINK, COLOR_LIME_GREEN);
+  drawString5x7(40, 20, "Margaret", COLOR_WHITE, COLOR_LIME_GREEN);
   while(1){
     if(redrawScreen){
       redrawScreen = 0;
