@@ -142,3 +142,96 @@ void drawRectOutline(u_char colMin, u_char rowMin, u_char width, u_char height,
   fillRectangle(colMin + width, rowMin, 1, height, colorBGR);
 }
 
+void drawBunny()
+{
+  fillRectangle(31, 69, 64, 45, COLOR_WHITE); //head
+  fillRectangle(31, 39, 16, 30, COLOR_WHITE); //left ear
+  fillRectangle(79, 39, 16, 30, COLOR_WHITE); //right ear
+  fillRectangle(35, 44, 8, 25, COLOR_PINK); //inner ear
+  fillRectangle(83, 44, 8, 25, COLOR_PINK);
+}
+
+void drawOpenEyes()
+{
+  fillRectangle(43, 79, 10, 10, COLOR_RED);
+  fillRectangle(73, 79, 10, 10, COLOR_RED);
+}
+
+void drawClosedEyes()
+{
+  fillRectangle(43, 79, 10, 10, COLOR_WHITE);
+  fillRectangle(73, 79, 10, 10, COLOR_WHITE);
+  fillRectangle(43, 86, 10, 3, COLOR_PINK);
+  fillRectangle(73, 86, 10, 3, COLOR_PINK);
+}
+
+//try converting to assy?
+void update_eyes(int eyes_status)
+{
+  if(eyes_status)
+    drawOpenEyes();
+  else
+    drawClosedEyes();
+}
+
+void drawClosedMouth()
+{
+  fillRectangle(53, 96, 20, 12, COLOR_WHITE);
+  fillRectangle(57, 100, 12, 2, COLOR_PINK);
+}
+
+void drawSmile()
+{
+  drawClosedMouth();
+  fillRectangle(55, 98, 2, 2, COLOR_PINK);
+  fillRectangle(53, 96, 2, 2, COLOR_PINK);
+  fillRectangle(69, 98, 2, 2, COLOR_PINK);
+  fillRectangle(71, 96, 2, 2, COLOR_PINK);
+}
+
+void drawFrown()
+{
+  drawClosedMouth();
+  fillRectangle(55, 102, 2, 2, COLOR_PINK);
+  fillRectangle(53, 104, 2, 2, COLOR_PINK);
+  fillRectangle(69, 102, 2, 2, COLOR_PINK);
+  fillRectangle(71, 104, 2, 2, COLOR_PINK);
+  drawClosedEyes();
+  fillRectangle(40, 89, 4, 4, COLOR_SKY_BLUE);
+  fillRectangle(82, 89, 4, 4, COLOR_SKY_BLUE);
+}
+
+void drawOpenMouth()
+{
+  drawClosedMouth();
+  fillRectangle(57, 98, 12, 7, COLOR_PINK);
+}
+
+void drawMouth(int mouth)
+{
+  switch(mouth){
+  case 0:
+    drawFrown();
+    break;
+  case 1:
+    drawClosedMouth();
+    break;
+  case 2:
+    drawSmile();
+    break;
+  default:
+    drawOpenMouth();
+  }
+}
+
+void drawCarrot()
+{
+  fillRectangle(54, 128, 20, 10, COLOR_ORANGE);
+  fillRectangle(52, 129, 2, 8, COLOR_ORANGE);
+  fillRectangle(50, 130, 2, 6, COLOR_ORANGE);
+  fillRectangle(48, 131, 2, 4, COLOR_ORANGE);
+  fillRectangle(46, 132, 2, 2, COLOR_ORANGE);
+  fillRectangle(74, 131, 4, 4, COLOR_FOREST_GREEN);
+  fillRectangle(78, 127, 4, 4, COLOR_FOREST_GREEN);
+  fillRectangle(78, 135, 4, 4, COLOR_FOREST_GREEN);
+}

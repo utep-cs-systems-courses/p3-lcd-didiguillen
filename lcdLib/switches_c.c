@@ -12,6 +12,7 @@
 #define SWITCHES 15
 
 extern int state;
+extern int redrawScreen;
 
 static char switch_update_interrupt_sense()
 {
@@ -36,6 +37,8 @@ void switch_interrupt_handler()
 {
   char p2val = switch_update_interrupt_sense();
   switches = ~p2val & SWITCHES;
+  sec_noBtnPress = 0;
+  redrawScreen = 1;
 }
 
 void __interrupt_vec(PORT2_VECTOR) Port_2()

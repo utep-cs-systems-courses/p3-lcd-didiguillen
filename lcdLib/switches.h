@@ -4,5 +4,5 @@
 void state_select(int);
 void switch_init();
 void switch_interrupt_handler();
-
+int sec_noBtnPress;
 #endif

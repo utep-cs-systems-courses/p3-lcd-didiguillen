@@ -64,14 +64,14 @@ void drawString11x16(u_char col, u_char row, char *string, u_int fgColorBGR, u_i
 void drawRectOutline(u_char colMin, u_char rowMin, u_char width, u_char height,
 		     u_int colorBGR);
 
-void update_eyes();
+void update_eyes(int);
 void drawBunny();
 void drawOpenEyes();
 void drawClosedMouth();
 void drawSmile();
 void drawFrown();
 void drawOpenMouth();
-void drawMouth();
+void drawMouth(int);
 void drawClosedEyes();
 void drawCarrot();
 #endif // included

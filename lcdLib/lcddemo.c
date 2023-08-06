@@ -15,6 +15,7 @@ int eyes_status = 1; //1 for open, 0 for closed
 int mouth_status = 0; //1 for open, 0 for closed
 int redrawScreen = 1;
 int mouth = 2; //neutral
+int happy = 1;
 
 //int max(int a, int b) { return a > b ? a : b; }
 //int min(int a, int b) { return a > b ? b : a; }
@@ -35,9 +36,9 @@ main()
     if(redrawScreen){
       redrawScreen = 0;
       //drawBunny();
-      update_eyes();
+      update_eyes(eyes_status);
       //drawSmile();
-      drawMouth();
+      drawMouth(mouth);
       //drawClosedMouth();
       drawCarrot();
     }
@@ -59,6 +60,7 @@ main()
   //drawHourglass(screenWidth >> 1, screenHeight >> 1, 30, COLOR_PINK);
 }
 
+/*
 void update_eyes()
 {
   if(eyes_status)
@@ -116,6 +118,9 @@ void drawFrown()
   fillRectangle(53, 104, 2, 2, COLOR_PINK);
   fillRectangle(69, 102, 2, 2, COLOR_PINK);
   fillRectangle(71, 104, 2, 2, COLOR_PINK);
+  drawClosedEyes();
+  fillRectangle(40, 89, 4, 4, COLOR_SKY_BLUE);
+  fillRectangle(82, 89, 4, 4, COLOR_SKY_BLUE);
 }
 
 void drawOpenMouth()
@@ -160,6 +165,7 @@ void drawCarrot()
   fillRectangle(78, 127, 4, 4, COLOR_FOREST_GREEN);
   fillRectangle(78, 135, 4, 4, COLOR_FOREST_GREEN);
 }
+*/
 /*
 void drawHourglass(int controlCol, int controlRow, int size, u_int color)
 {
@@ -186,20 +192,26 @@ void wdt_c_handler()
   if(sec_eyes++ >= 1250) {
     sec_eyes = 0;
     eyes_status = 0;
-    redrawScreen = 1;
+    if(happy)
+      redrawScreen = 1;
   }
   if(sec_eyes++ >= 200 && !eyes_status) {
     sec_eyes = 0;
     eyes_status = 1;
-    redrawScreen = 1;
+    if(happy)
+      redrawScreen = 1;
   }
 
-  if(sec_mouth++ >= 1250){
+  if(sec_noBtnPress++ >= 1250 && (sec_mouth++ >= 1250)){
     sec_mouth = 0;
     if(mouth > 0)
       mouth--;
     else
-      mouth = 2;
-    redrawScreen = 1;
+      mouth = 0;
+    if(!mouth){
+      happy = 0;
+      drawFrown();
+      redrawScreen = 0;
+    }
   }
 }
