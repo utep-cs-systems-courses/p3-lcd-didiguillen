@@ -9,6 +9,11 @@ jt:
 	.word case2
 	.word case3
 
+	.extern drawCarrot
+	.extern mouth
+	.extern happy
+	.extern sec_carrot
+	
 	.text
 	.align 2
 	.global state_select
@@ -21,6 +26,10 @@ state_select:
 
 case1:
 	mov #1, &state
+	mov #3, &mouth
+	mov #1, &happy
+	mov #0, &sec_carrot
+	call #drawCarrot
 	jmp esac
 case2:
 	mov #2, &state

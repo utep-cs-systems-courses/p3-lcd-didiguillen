@@ -166,7 +166,7 @@ void drawClosedEyes()
 }
 
 //try converting to assy?
-void update_eyes(int eyes_status)
+void update_eyes()
 {
   if(eyes_status)
     drawOpenEyes();
@@ -178,6 +178,8 @@ void drawClosedMouth()
 {
   fillRectangle(53, 96, 20, 12, COLOR_WHITE);
   fillRectangle(57, 100, 12, 2, COLOR_PINK);
+  fillRectangle(40, 89, 4, 4, COLOR_WHITE);
+  fillRectangle(82, 89, 4, 4, COLOR_WHITE);
 }
 
 void drawSmile()
@@ -207,7 +209,7 @@ void drawOpenMouth()
   fillRectangle(57, 98, 12, 7, COLOR_PINK);
 }
 
-void drawMouth(int mouth)
+void drawMouth()
 {
   switch(mouth){
   case 0:
@@ -234,4 +236,9 @@ void drawCarrot()
   fillRectangle(74, 131, 4, 4, COLOR_FOREST_GREEN);
   fillRectangle(78, 127, 4, 4, COLOR_FOREST_GREEN);
   fillRectangle(78, 135, 4, 4, COLOR_FOREST_GREEN);
+}
+
+void clearBtm()
+{
+  fillRectangle(46, 127, 40, 40, COLOR_LIME_GREEN);
 }

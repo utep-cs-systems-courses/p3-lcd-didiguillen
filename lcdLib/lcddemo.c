@@ -11,11 +11,11 @@
 
 void drawHourglass(int, int, int, u_int);
 void drawCat();
-int eyes_status = 1; //1 for open, 0 for closed
-int mouth_status = 0; //1 for open, 0 for closed
+eyes_status = 1; //1 for open, 0 for closed
+//int mouth_status = 0; //1 for open, 0 for closed
 int redrawScreen = 1;
-int mouth = 2; //neutral
-int happy = 1;
+mouth = 2; //neutral
+happy = 1;
 
 //int max(int a, int b) { return a > b ? a : b; }
 //int min(int a, int b) { return a > b ? b : a; }
@@ -40,7 +40,7 @@ main()
       //drawSmile();
       drawMouth(mouth);
       //drawClosedMouth();
-      drawCarrot();
+      //drawCarrot();
     }
     P1OUT &= ~LED;
     or_sr(0x10);
@@ -201,7 +201,10 @@ void wdt_c_handler()
     if(happy)
       redrawScreen = 1;
   }
-
+  if(sec_carrot++ >= 1250){
+    sec_carrot = 0;
+    clearBtm();
+  }
   if(sec_noBtnPress++ >= 1250 && (sec_mouth++ >= 1250)){
     sec_mouth = 0;
     if(mouth > 0)
