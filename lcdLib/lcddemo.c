@@ -5,6 +5,7 @@
 #include <libTimer.h>
 #include "lcdutils.h"
 #include "lcddraw.h"
+#include "switches.h"
 
 #define LED BIT6
 
@@ -24,7 +25,7 @@ main()
   configureClocks();
   lcd_init();
   u_char width = screenWidth, height = screenHeight;
-
+  switch_init();
   clearScreen(COLOR_LIME_GREEN);
   enableWDTInterrupts();
   or_sr(0x8);

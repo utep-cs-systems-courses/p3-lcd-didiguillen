@@ -1,0 +1,8 @@
+#ifndef lcd_switches
+#define lcd_switches
+
+void state_select(int);
+void switch_init();
+void switch_interrupt_handler();
+
+#endif
