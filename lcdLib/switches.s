@@ -13,6 +13,7 @@ jt:
 	.extern mouth
 	.extern happy
 	.extern sec_carrot
+	.extern chewing
 	
 	.text
 	.align 2
@@ -29,6 +30,7 @@ case1:
 	mov #3, &mouth
 	mov #1, &happy
 	mov #0, &sec_carrot
+	mov #1, &chewing
 	call #drawCarrot
 	jmp esac
 case2:

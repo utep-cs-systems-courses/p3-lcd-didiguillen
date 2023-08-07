@@ -16,6 +16,7 @@ eyes_status = 1; //1 for open, 0 for closed
 int redrawScreen = 1;
 mouth = 2; //neutral
 happy = 1;
+chewing = 0;
 
 //int max(int a, int b) { return a > b ? a : b; }
 //int min(int a, int b) { return a > b ? b : a; }
@@ -185,8 +186,10 @@ void drawHourglass(int controlCol, int controlRow, int size, u_int color)
 }
 */
 //Todo- draw rectangle, draw diamond, make functions
+int open = 0;
 void wdt_c_handler()
 {
+  static int sec_chew = 0;
   static int sec_mouth = 0;
   static int sec_eyes = 0;
   if(sec_eyes++ >= 1250) {
@@ -201,7 +204,23 @@ void wdt_c_handler()
     if(happy)
       redrawScreen = 1;
   }
-  if(sec_carrot++ >= 1250){
+  /*if(chewing && sec_chew++ >= 250){
+    if(open){
+      mouth = 1;
+      open = 0;
+      sec_chew = 0;
+    }
+    else{
+      mouth = 3;
+      open = 1;
+      sec_chew = 0;
+    }
+    if(sec_carrot >= 1849){
+      mouth = 2;
+      chewing = 0;
+    }
+    }*/
+  if(sec_carrot++ >= 2000){
     sec_carrot = 0;
     clearBtm();
   }

@@ -79,6 +79,7 @@ void drawClosedEyes();
 void drawCarrot();
 void clearBtm();
 int sec_carrot;
+int chewing;
 #endif // included
 
 
