@@ -94,34 +94,6 @@ void drawString5x7(u_char col, u_char row, char *string,
   }
 }
 
-void drawChar11x16(u_char rcol, u_char rrow, char c, u_int fgColorBGR, u_int bgColorBGR)
-{
-  u_char col = 0;
-  u_char row = 0;
-  u_char bit = 0x01;
-  u_char oc = c - 0x20;
-
-  lcd_setArea(rcol, rrow, rcol + 10, rrow + 16);
-  while(row < 17){
-    while(col < 11){
-      u_int colorBGR = (font_11x16[oc][col] & bit) ? fgColorBGR : bgColorBGR;
-      lcd_writeColor(colorBGR);
-      col++;
-    }
-    col = 0;
-    bit <<= 1;
-    row++;
-  }
-}
-
-void drawString11x16(u_char col, u_char row, char *string, u_int fgColorBGR, u_int bgColorBGR)
-{
-  u_char cols = col;
-  while(*string){
-    drawChar11x16(cols, row, *string++, fgColorBGR, bgColorBGR);
-    cols+= 12;
-  }
-}
 /** Draw rectangle outline
  *  
  *  \param colMin Column start
@@ -165,11 +137,12 @@ void drawClosedEyes()
   fillRectangle(73, 86, 10, 3, COLOR_PINK);
 }
 
-//try converting to assy?
 void update_eyes()
 {
-  if(eyes_status)
+  if(eyes_status){
+    open_eyes = 1;
     drawOpenEyes();
+  }
   else
     drawClosedEyes();
 }
@@ -189,6 +162,13 @@ void drawSmile()
   fillRectangle(53, 96, 2, 2, COLOR_PINK);
   fillRectangle(69, 98, 2, 2, COLOR_PINK);
   fillRectangle(71, 96, 2, 2, COLOR_PINK);
+}
+
+void drawOpenSmile()
+{
+  drawSmile();
+  fillRectangle(55, 98, 16, 2, COLOR_PINK);
+  fillRectangle(53, 96, 18, 2, COLOR_PINK);
 }
 
 void drawFrown()
@@ -238,6 +218,28 @@ void drawCarrot()
   fillRectangle(78, 135, 4, 4, COLOR_FOREST_GREEN);
 }
 
+void drawSoap()
+{
+  fillRectangle(54, 128, 20, 15, COLOR_CYAN);
+  fillRectangle(60, 130, 10, 4, COLOR_WHITE);
+}
+
+void drawBall()
+{
+  fillRectangle(49, 127, 30, 30, COLOR_MAGENTA);
+  fillRectangle(49, 127, 5, 5, COLOR_LIME_GREEN);
+  fillRectangle(49, 152, 5, 5, COLOR_LIME_GREEN);
+  fillRectangle(74, 127, 5, 5, COLOR_LIME_GREEN);
+  fillRectangle(74, 152, 5, 5, COLOR_LIME_GREEN);
+  drawString5x7(52, 140, "BALL", COLOR_WHITE, COLOR_MAGENTA);
+}
+
+void drawSleep()
+{
+  drawChar5x7(49, 127, 'Z', COLOR_WHITE, COLOR_LIME_GREEN);
+  drawChar5x7(58, 135, 'Z', COLOR_WHITE, COLOR_LIME_GREEN);
+  drawChar5x7(70, 140, 'z', COLOR_WHITE, COLOR_LIME_GREEN);
+}
 void clearBtm()
 {
   fillRectangle(46, 127, 40, 40, COLOR_LIME_GREEN);

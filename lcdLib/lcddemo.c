@@ -9,18 +9,8 @@
 
 #define LED BIT6
 
-void drawHourglass(int, int, int, u_int);
-void drawCat();
-eyes_status = 1; //1 for open, 0 for closed
-//int mouth_status = 0; //1 for open, 0 for closed
 int redrawScreen = 1;
-mouth = 2; //neutral
-happy = 1;
-chewing = 0;
 
-//int max(int a, int b) { return a > b ? a : b; }
-//int min(int a, int b) { return a > b ? b : a; }
-/** Initializes everything, clears the screen, draws "hello" and a square */
 int
 main()
 {
@@ -32,205 +22,99 @@ main()
   enableWDTInterrupts();
   or_sr(0x8);
   drawBunny();
+  eyes_status = 1;
+  mouth = 2;
+  happy = 1;
   drawString5x7(40, 20, "Margaret", COLOR_WHITE, COLOR_LIME_GREEN);
+  open_eyes = 1;
   while(1){
     if(redrawScreen){
       redrawScreen = 0;
-      //drawBunny();
       update_eyes(eyes_status);
-      //drawSmile();
-      drawMouth(mouth);
-      //drawClosedMouth();
-      //drawCarrot();
+      if(!ball)
+	drawMouth(mouth);
+      else
+	drawOpenSmile();
     }
     P1OUT &= ~LED;
     or_sr(0x10);
     P1OUT |= LED;
   }
-  /*
-  drawString5x7(20,20, "hello", COLOR_GREEN, COLOR_RED);
-  */
-  //fillRectangle(25, 25, 60, 60, COLOR_RED);
-  //drawCat();
-  //drawBunny();
-  //drawOpenEyes();
-  //drawClosedEyes();
-  //drawClosedMouth();
-  //drawOpenMouth();
-  /**/
-  //drawHourglass(screenWidth >> 1, screenHeight >> 1, 30, COLOR_PINK);
 }
 
-/*
-void update_eyes()
-{
-  if(eyes_status)
-    drawOpenEyes();
-  else
-    drawClosedEyes();
-}
-
-void drawCat()
-{
-  fillRectangle(41, 38, 40, 27, COLOR_PINK);
-  fillRectangle(41, 28, 9, 10, COLOR_PINK);
-  fillRectangle(72, 28, 9, 10, COLOR_PINK);
-  fillRectangle(46, 44, 10, 14, COLOR_WHITE);
-  fillRectangle(66, 44, 10, 14, COLOR_WHITE);
-  fillRectangle(48, 44, 7, 10, COLOR_BLACK);
-  fillRectangle(67, 44, 7, 10, COLOR_BLACK);
-}
-
-void drawBunny()
-{
-  fillRectangle(31, 69, 64, 45, COLOR_WHITE);
-  fillRectangle(31, 39, 16, 30, COLOR_WHITE);
-  fillRectangle(79, 39, 16, 30, COLOR_WHITE);
-  fillRectangle(35, 44, 8, 25, COLOR_PINK);
-  fillRectangle(83, 44, 8, 25, COLOR_PINK);
-}
-
-void drawOpenEyes()
-{
-  fillRectangle(43, 79, 10, 10, COLOR_RED);
-  fillRectangle(73, 79, 10, 10, COLOR_RED);
-}
-
-
-void drawClosedMouth()
-{
-  fillRectangle(53, 96, 20, 12, COLOR_WHITE);
-  fillRectangle(57, 100, 12, 2, COLOR_PINK);  
-}
-
-void drawSmile()
-{
-  drawClosedMouth();
-  fillRectangle(55, 98, 2, 2, COLOR_PINK);
-  fillRectangle(53, 96, 2, 2, COLOR_PINK);
-  fillRectangle(69, 98, 2, 2, COLOR_PINK);
-  fillRectangle(71, 96, 2, 2, COLOR_PINK);
-}
-
-void drawFrown()
-{
-  drawClosedMouth();
-  fillRectangle(55, 102, 2, 2, COLOR_PINK);
-  fillRectangle(53, 104, 2, 2, COLOR_PINK);
-  fillRectangle(69, 102, 2, 2, COLOR_PINK);
-  fillRectangle(71, 104, 2, 2, COLOR_PINK);
-  drawClosedEyes();
-  fillRectangle(40, 89, 4, 4, COLOR_SKY_BLUE);
-  fillRectangle(82, 89, 4, 4, COLOR_SKY_BLUE);
-}
-
-void drawOpenMouth()
-{
-  drawClosedMouth();
-  fillRectangle(57, 98, 12, 7, COLOR_PINK);
-}
-
-void drawMouth()
-{
-  switch(mouth){
-  case 0:
-    drawFrown();
-    break;
-  case 1:
-    drawClosedMouth();
-    break;
-  case 2:
-    drawSmile();
-    break;
-  default:
-    drawOpenMouth();
-  }
-}
-
-void drawClosedEyes()
-{
-  fillRectangle(43, 79, 10, 10, COLOR_WHITE);
-  fillRectangle(73, 79, 10, 10, COLOR_WHITE);
-  fillRectangle(43, 86, 10, 3, COLOR_PINK);
-  fillRectangle(73, 86, 10, 3, COLOR_PINK);
-}
-
-void drawCarrot()
-{
-  fillRectangle(54, 128, 20, 10, COLOR_ORANGE);
-  fillRectangle(52, 129, 2, 8, COLOR_ORANGE);
-  fillRectangle(50, 130, 2, 6, COLOR_ORANGE);
-  fillRectangle(48, 131, 2, 4, COLOR_ORANGE);
-  fillRectangle(46, 132, 2, 2, COLOR_ORANGE);
-  fillRectangle(74, 131, 4, 4, COLOR_FOREST_GREEN);
-  fillRectangle(78, 127, 4, 4, COLOR_FOREST_GREEN);
-  fillRectangle(78, 135, 4, 4, COLOR_FOREST_GREEN);
-}
-*/
-/*
-void drawHourglass(int controlCol, int controlRow, int size, u_int color)
-{
-  int c = 0;
-  int r = 0;
-  for(int j = 0; j < 30; j++){
-    int upper = min(-r, +r);
-    int lower = max(-r, +r);
-    int drawCol = c;
-    for(int drawRow = upper; drawRow <= lower; drawRow++){
-      drawPixel(controlCol+drawCol, controlRow+drawRow, color);
-      drawPixel(controlCol-drawCol, controlRow+drawRow, color);
-    }
-    c+=1;
-    r+=1;
-  }
-}
-*/
-//Todo- draw rectangle, draw diamond, make functions
-int open = 0;
 void wdt_c_handler()
 {
-  static int sec_chew = 0;
   static int sec_mouth = 0;
   static int sec_eyes = 0;
-  if(sec_eyes++ >= 1250) {
-    sec_eyes = 0;
+  if(open_eyes){
+    if(sec_eyes++ >= 1250) {
+      sec_eyes = 0;
+      eyes_status = 0;
+      if(happy)
+	redrawScreen = 1;
+    }
+    if(sec_eyes++ >= 200 && !eyes_status) {
+      sec_eyes = 0;
+      eyes_status = 1;
+      if(happy)
+	redrawScreen = 1;
+    }
+  }
+  else{
     eyes_status = 0;
-    if(happy)
-      redrawScreen = 1;
-  }
-  if(sec_eyes++ >= 200 && !eyes_status) {
-    sec_eyes = 0;
-    eyes_status = 1;
-    if(happy)
-      redrawScreen = 1;
-  }
-  /*if(chewing && sec_chew++ >= 250){
-    if(open){
-      mouth = 1;
-      open = 0;
-      sec_chew = 0;
+    if(sec_eyes++ >= 2000){
+      sec_eyes = 0;
+      open_eyes = 1;
     }
-    else{
-      mouth = 3;
-      open = 1;
-      sec_chew = 0;
-    }
-    if(sec_carrot >= 1849){
+  }
+  if(sleep){
+    sec_mouth = 0;
+    if(sec_sleep++ >= 2000){
+      sec_sleep = 0;
       mouth = 2;
-      chewing = 0;
+      sec_mouth = -750;
+      sleep = 0;
+      clearBtm();
     }
-    }*/
-  if(sec_carrot++ >= 2000){
-    sec_carrot = 0;
-    clearBtm();
   }
-  if(sec_noBtnPress++ >= 1250 && (sec_mouth++ >= 1250)){
+  if(carrot){
+    if(sec_carrot++ >= 1250){
+      sec_carrot = 0;
+      sec_mouth = 750;
+      carrot = 0;
+      clearBtm();
+    }
+  }
+  if(soap){
+    sec_mouth = 0;
+    if(sec_soap++ >= 2000){
+      sec_soap = 0;
+      mouth = 2;
+      sec_mouth = -750;
+      soap = 0;
+      clearBtm();
+    }
+  }
+  if(ball){
+    if(sec_ball++ >= 2000){
+      sec_ball = 0;
+      mouth = 2;
+      sec_mouth = -750;
+      ball = 0;
+      clearBtm();
+    }
+  }
+  if(!btnPress)
+    sec_noBtnPress++;
+  if(btnPress)
+    btnPress = 0;
+  if(sec_mouth++ >= 1250 && sec_noBtnPress >= 1250){
     sec_mouth = 0;
     if(mouth > 0)
       mouth--;
     else
       mouth = 0;
-    if(!mouth){
+    if(!mouth && sec_noBtnPress >= 1250){
       happy = 0;
       drawFrown();
       redrawScreen = 0;

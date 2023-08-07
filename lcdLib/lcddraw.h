@@ -50,9 +50,6 @@ void drawString5x7(u_char col, u_char row, char *string,
 void drawChar5x7(u_char col, u_char row, char c, 
 		 u_int fgColorBGR, u_int bgColorBGR);
 
-void drawChar11x16(u_char col, u_char row, char c, u_int fgColorBGR, u_int bgColorBGR);
-
-void drawString11x16(u_char col, u_char row, char *string, u_int fgColorBGR, u_int bgColorBGR);
 /** Draw rectangle outline
  *  
  *  \param colMin Column start
@@ -72,14 +69,22 @@ void drawBunny();
 void drawOpenEyes();
 void drawClosedMouth();
 void drawSmile();
+void drawOpenSmile();
 void drawFrown();
 void drawOpenMouth();
 void drawMouth();
 void drawClosedEyes();
 void drawCarrot();
 void clearBtm();
+void drawSoap();
+void drawBall();
+void drawSleep();
 int sec_carrot;
 int chewing;
+int sec_soap;
+int open_eyes;
+int sec_ball;
+int sec_sleep;
 #endif // included
 
 

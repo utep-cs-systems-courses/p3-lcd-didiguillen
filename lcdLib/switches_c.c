@@ -37,7 +37,8 @@ void switch_interrupt_handler()
 {
   char p2val = switch_update_interrupt_sense();
   switches = ~p2val & SWITCHES;
-  sec_noBtnPress = 0;
+  sec_noBtnPress = -1250;
+  btnPress = 1;
   redrawScreen = 1;
 }
 
@@ -46,21 +47,25 @@ void __interrupt_vec(PORT2_VECTOR) Port_2()
   if(P2IFG & SW1){
     P2IFG &= ~SW1;
     switch_interrupt_handler();
+    clearBtm();
     state_select(1);
   }
   else if(P2IFG & SW2){
     P2IFG &= ~SW2;
     switch_interrupt_handler();
+    clearBtm();
     state_select(2);
   }
   else if(P2IFG & SW3){
     P2IFG &= ~SW3;
     switch_interrupt_handler();
+    clearBtm();
     state_select(3);
   }
   else if(P2IFG & SW4){
     P2IFG &= ~SW4;
     switch_interrupt_handler();
+    clearBtm();
     state_select(4);
   }
 }
