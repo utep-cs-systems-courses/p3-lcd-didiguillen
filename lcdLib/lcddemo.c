@@ -19,6 +19,8 @@ int ball_buzz = 1;
 int
 main()
 {
+  P1DIR |= LED;
+  P1OUT |= LED;
   configureClocks();
   lcd_init();
   u_char width = screenWidth, height = screenHeight;
