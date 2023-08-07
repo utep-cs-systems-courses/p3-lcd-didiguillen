@@ -6,10 +6,15 @@
 #include "lcdutils.h"
 #include "lcddraw.h"
 #include "switches.h"
+#include "buzzer.h"
 
 #define LED BIT6
 
 int redrawScreen = 1;
+int sleep_buzz = 1;
+int eat_buzz = 1;
+int soap_buzz = 1;
+int ball_buzz = 1;
 
 int
 main()
@@ -18,6 +23,7 @@ main()
   lcd_init();
   u_char width = screenWidth, height = screenHeight;
   switch_init();
+  buzzer_init();
   clearScreen(COLOR_LIME_GREEN);
   enableWDTInterrupts();
   or_sr(0x8);
@@ -46,6 +52,7 @@ void wdt_c_handler()
 {
   static int sec_mouth = 0;
   static int sec_eyes = 0;
+  static int sec_buzz = 0;
   if(open_eyes){
     if(sec_eyes++ >= 1250) {
       sec_eyes = 0;
@@ -68,24 +75,55 @@ void wdt_c_handler()
     }
   }
   if(sleep){
+    if(sleep_buzz){
+      buzzer_set_period(25000);
+      sec_buzz++;
+      if(sec_buzz >= 250){
+	sleep_buzz = 0;
+	sec_buzz = 0;
+	buzzer_set_period(0);
+      }
+    }
     sec_mouth = 0;
     if(sec_sleep++ >= 2000){
       sec_sleep = 0;
       mouth = 2;
       sec_mouth = -750;
       sleep = 0;
+      sleep_buzz = 1;
       clearBtm();
     }
   }
   if(carrot){
+    if(eat_buzz){
+      buzzer_set_period(18000);
+      sec_buzz++;
+      if(sec_buzz >= 250){
+	sec_buzz = 0;
+	eat_buzz = 0;
+	buzzer_set_period(0);
+      }
+    }
+    else
+      buzzer_set_period(0);
     if(sec_carrot++ >= 1250){
       sec_carrot = 0;
       sec_mouth = 750;
       carrot = 0;
       clearBtm();
+      eat_buzz = 1;
     }
   }
   if(soap){
+    if(soap_buzz){
+      buzzer_set_period(15000);
+      sec_buzz++;
+      if(sec_buzz >= 250){
+	sec_buzz = 0;
+	soap_buzz = 0;
+	buzzer_set_period(0);
+      }
+    }
     sec_mouth = 0;
     if(sec_soap++ >= 2000){
       sec_soap = 0;
@@ -93,14 +131,25 @@ void wdt_c_handler()
       sec_mouth = -750;
       soap = 0;
       clearBtm();
+      soap_buzz = 1;
     }
   }
   if(ball){
+    if(ball_buzz){
+      buzzer_set_period(3000);
+      sec_buzz++;
+      if(sec_buzz >= 250){
+	sec_buzz = 0;
+	ball_buzz = 0;
+	buzzer_set_period(0);
+      }
+    }
     if(sec_ball++ >= 2000){
       sec_ball = 0;
       mouth = 2;
       sec_mouth = -750;
       ball = 0;
+      ball_buzz = 1;
       clearBtm();
     }
   }

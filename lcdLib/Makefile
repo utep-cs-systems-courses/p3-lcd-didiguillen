@@ -22,7 +22,7 @@ install: libLcd.a
 clean:
 	rm -f libLcd.a *.o *.elf
 
-lcddemo.elf: lcddemo.o libLcd.a wdt_handler.o switches.o switches_c.o
+lcddemo.elf: lcddemo.o libLcd.a wdt_handler.o switches.o switches_c.o buzzer.o
 	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@ -lTimer -lLcd 
 
 load: lcddemo.elf
@@ -31,3 +31,4 @@ load: lcddemo.elf
 wdt_handler.o: wdt_handler.s
 switches.o: switches.s
 switches_c.o: switches_c.c switches.h
+buzzer.o: buzzer.c buzzer.h
